@@ -35,7 +35,7 @@ Participants were recruited equally from the Westbound and Eastbound platforms a
 
 #### Target outcomes:
 
-We carried out a 2 (orientation: toward, away from) × 4 (station: Spadina, St. George, Bloor-Yonge, Sherbourne) analysis of variance (ANOVA) on closeness ratings, which revealed no main effect of orientation, F < 1, and a main effect of station, F(3, 194) = 24.10, p < .001, ηp2 = .27. This main effect was qualified by the predicted interaction between orientation and station, F(3, 194) = 16.28, p < .001, ηp2 = .20. We decomposed this interaction by the subjective-distance ratings between participants traveling east and west for each of the four subway stations. Westbound participants rated the stations to the west of Bay Street as closer than did eastbound participants; this effect was obtained for both the station one stop to the west (St. George, p < .001, ηp2 = .28) and the station two stops to the west (Spadina, p = .001, ηp2 = .20). The opposite pattern held true for stations to the east of Bay Street. Eastbound participants rated the stations to the east of Bay Street as closer than did westbound participants; this effect was obtained for both the station one stop to the east (Bloor-Yonge, p = .053, ηp2 = .08) and the station two stops to the east (Sherbourne, p < .001, ηp2 = .24). Figure 1 summarizes these results.
+>We carried out a 2 (orientation: toward, away from) × 4 (station: Spadina, St. George, Bloor-Yonge, Sherbourne) analysis of variance (ANOVA) on closeness ratings, which revealed no main effect of orientation, F < 1, and a main effect of station, F(3, 194) = 24.10, p < .001, ηp2 = .27. This main effect was qualified by the predicted interaction between orientation and station, F(3, 194) = 16.28, p < .001, ηp2 = .20. We decomposed this interaction by the subjective-distance ratings between participants traveling east and west for each of the four subway stations. Westbound participants rated the stations to the west of Bay Street as closer than did eastbound participants; this effect was obtained for both the station one stop to the west (St. George, p < .001, ηp2 = .28) and the station two stops to the west (Spadina, p = .001, ηp2 = .20). The opposite pattern held true for stations to the east of Bay Street. Eastbound participants rated the stations to the east of Bay Street as closer than did westbound participants; this effect was obtained for both the station one stop to the east (Bloor-Yonge, p = .053, ηp2 = .08) and the station two stops to the east (Sherbourne, p < .001, ηp2 = .24). Figure 1 summarizes these results. (Maglio and Polman, 2014)
 
 
 
@@ -124,64 +124,77 @@ S1_means_directional
 ## Inferential statistics
 
 2 x 4 ANOVA on closeness ratings Attempt to reproduce Results 
-"We carried out a 2 (orientation: toward, away from) × 4
+
+>"We carried out a 2 (orientation: toward, away from) × 4
 (station: Spadina, St. George, Bloor-Yonge, Sherbourne)
 analysis of variance (ANOVA) on closeness ratings, which
 revealed no main effect of orientation, F < 1, and a main
 effect of station, F(3, 194) = 24.10, p < .001, ηp
 2 = .27. This main effect was qualified by the predicted interaction
 between orientation and station, F(3, 194) = 16.28, p < .001,
-ηp2 = .20."
+ηp2 = .20." (Maglio and Polman, 2014)
 
 
 ```{r}
 S1_data <- S1_Subway
-aov.S1 <- aov (DISTANCE~DIRECTION*STN_NAME, data=S1_data)
+aov.S1 <- aov (DISTANCE~DIRECTION*STN_NAME, data=S1_data) #computes ANOVA with interaction
 aov.S1
-#summary(aov.S1) 
-etasq(aov.S1, anova = TRUE) # Provides Eta^2 value
+etasq(aov.S1, anova = TRUE) # Provides Eta^2 value, ANOVA = TRUE provides ANOVA table
 ```
 
-Calculate separate ANOVA for each direction- old code
-```{r}
-#S1_data_east <- filter(S1_Subway, DIRECTION == "EAST" )
-#aov.S1_e <- aov (DISTANCE~STN_NAME, data=S1_data_east)
-#aov.S1_e
-#summary(aov.S1_e)
-#etasq(aov.S1_e)
-```
-We decomposed this interaction by the subjective-distance ratings between participants traveling east and west for each of the four subway stations. Westbound participants rated the stations to the west of Bay Street as closer than did eastbound participants; this effect was obtained for both the station one stop to the west (St. George, p < .001, ηp2 = .28) and the station two stops to the west (Spadina, p = .001, ηp2 = .20). The opposite pattern held true for stations to the east of Bay Street. Eastbound participants rated the stations to the east of Bay Street as closer than did westbound participants; this effect was obtained for both the station one stop to the east (Bloor-Yonge, p = .053, ηp2 = .08) and the station two stops to the east (Sherbourne, p < .001, ηp2 = .24). Figure 1 summarizes these results.
+>"We decomposed this interaction by the subjective-distance ratings between participants traveling east and west for each of the four subway stations. Westbound participants rated the stations to the west of Bay Street as closer than did eastbound participants; this effect was obtained for both the station one stop to the west (St. George, p < .001, ηp2 = .28)..." (Maglio and Polman, 2014)
 
+St. George Station ANOVA
 ```{r}
-S1_data_STG <- filter(S1_Subway, STN_NAME == "STG" )
-aov.S1_STG <- aov (DISTANCE~DIRECTION, data=S1_data_STG)
+S1_data_STG <- filter(S1_Subway, STN_NAME == "STG" ) #filters data for St. George Station 
+aov.S1_STG <- aov (DISTANCE~DIRECTION, data=S1_data_STG) #computes ANOVA
 aov.S1_STG
-summary(aov.S1_e)
-etasq(aov.S1_STG)
+summary(aov.S1_STG) #provides ANOVA table
+etasq(aov.S1_STG) #provides effect-size (Eta^2) value
 ```
+>"and the station two stops to the west (Spadina, p = .001, ηp2 = .20)."  (Maglio and Polman, 2014)
 
+Spadina Station ANOVA
 ```{r}
-S1_data_SPAD <- filter(S1_Subway, STN_NAME == "SPAD" )
-aov.S1_SPAD <- aov (DISTANCE~DIRECTION, data=S1_data_SPAD)
+S1_data_SPAD <- filter(S1_Subway, STN_NAME == "SPAD" ) #filters data for Spadina Station 
+aov.S1_SPAD <- aov (DISTANCE~DIRECTION, data=S1_data_SPAD) #computes ANOVA
 aov.S1_SPAD
-summary(aov.S1_SPAD)
-etasq(aov.S1_SPAD)
+summary(aov.S1_SPAD) #provides ANOVA table
+etasq(aov.S1_SPAD) #provides effect-size (Eta^2) value
 ```
+>"The opposite pattern held true for stations to the east of Bay Street. Eastbound participants rated the stations to the east of Bay Street as closer than did westbound participants; this effect was obtained for both the station one stop to the east (Bloor-Yonge, p = .053, ηp2 = .08)..." (Maglio and Polman, 2014)
 
+Bloor-Yonge Station ANOVA
 
 ```{r}
-TukeyHSD(aov.S1) #calculates p statistics found for Direction and Station Name
+S1_data_BY <- filter(S1_Subway, STN_NAME == "B-Y" ) #filters data for Bloor-Yonge Station 
+aov.S1_BY <- aov (DISTANCE~DIRECTION, data=S1_data_BY) #computes ANOVA
+aov.S1_BY
+summary(aov.S1_BY) #provides ANOVA table
+etasq(aov.S1_BY) #provides effect-size (Eta^2) value
 ```
 
+
+>"and the station two stops to the east (Sherbourne, p < .001, ηp2 = .24)." (Maglio and Polman, 2014)
+
+Sherbourne Station ANOVA
+
+```{r}
+S1_data_SHER <- filter(S1_Subway, STN_NAME == "SHER" ) #filters data for Sherbourne Station 
+aov.S1_SHER <- aov (DISTANCE~DIRECTION, data=S1_data_SHER) #computes ANOVA
+aov.S1_SHER
+summary(aov.S1_SHER) #provides ANOVA table
+etasq(aov.S1_SHER) #provides effect-size (Eta^2) value
+```
 
 # Step 5: Conclusion
 
-The study replicated some findings and not others. The most glaring failure to replicate was in Bloor-Yonge Station classifed by direction, wherein the authors claimed significance and my analysis did yielded a p value of aroud 0.5.
+The study replicated all findings, but one. 
 
 The main findings were partially replicated. We found no main effect of orientation (F<1), and a main effect of station F(3,194) = 23.35, p<0.001, ηp2 = 0.27. The main effect showed a lower F value than stated in the orginal paper F(3,194) = 23.35 as opposed to F(3,194) = 24.10. Orientation and station interaction matched the calculation in the paper  F(3, 194) = 16.28, p < .001,
 ηp2 = .20. 
 
-However,
+The results for the decompostion of the interaction, corroborated the results from the paper. The participants on the westbound platform rated stations to the west closer (St. George, p < .001, ηp2 = .28; Spadina, p = .001, ηp2 = .20). Participants on the eastbound platform rated stations to the east closer (Bloor-Yonge, p = .053, ηp2 = .08; Sherbourne, p < .001, ηp2 = .24). 
 
 
 
