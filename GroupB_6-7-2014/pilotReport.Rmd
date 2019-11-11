@@ -197,6 +197,8 @@ reportObject <- reproCheck(reportedValue = '0.20', obtainedValue = inter_effect_
 
 >"We decomposed this interaction by the subjective-distance ratings between participants traveling east and west for each of the four subway stations. Westbound participants rated the stations to the west of Bay Street as closer than did eastbound participants; this effect was obtained for both the station one stop to the west (St. George, p < .001, ηp2 = .28)..." (Maglio and Polman, 2014)
 
+Based on this text, we assumed that the authors had continued using ANOVA.
+
 St. George Station ANOVA
 ```{r}
 S1_data_STG <- filter(S1_Subway, STN_NAME == "STG" ) #filters data for St. George Station 
