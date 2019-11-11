@@ -241,7 +241,7 @@ reportObject <- reproCheck(reportedValue = '0.001', obtainedValue = orient_p_val
 #STG_orient: effect size
 orient_e_size_SPAD  <- Exp1_SPAD_ANOVA$`Partial eta^2`[1]
 
-reportObject <- reproCheck(reportedValue = '0.28', obtainedValue = orient_e_size_STG, valueType = 'p')
+reportObject <- reproCheck(reportedValue = '0.28', obtainedValue = orient_e_size_STG, valueType = 'other')
 ```
 
 
