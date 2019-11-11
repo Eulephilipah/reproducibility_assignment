@@ -9,7 +9,7 @@ output:
 [TEXT IN SQUARE BRACKETS IS HERE FOR GUIDANCE. PLEASE DELETE TEXT IN SQUARE BRACKETS BEFORE KNITTING THE FINAL REPORT]
 
 # Report Details
-
+ 
 [PILOT/COPILOT ENTER RELEVANT REPORT DETAILS HERE]
 
 ```{r}
@@ -123,7 +123,7 @@ S1_means_directional
 
 ## Inferential statistics
 
-2 x 4 ANOVA on closeness ratings Attempt to reproduce Results 
+2 x 4 ANOVA on closeness ratings attempt to reproduce Results 
 
 >"We carried out a 2 (orientation: toward, away from) × 4
 (station: Spadina, St. George, Bloor-Yonge, Sherbourne)
@@ -139,8 +139,60 @@ between orientation and station, F(3, 194) = 16.28, p < .001,
 S1_data <- S1_Subway
 aov.S1 <- aov (DISTANCE~DIRECTION*STN_NAME, data=S1_data) #computes ANOVA with interaction
 aov.S1
-etasq(aov.S1, anova = TRUE) # Provides Eta^2 value, ANOVA = TRUE provides ANOVA table
+Exp1_Anova <- etasq(aov.S1, anova = TRUE) # Provides Eta^2 value, ANOVA = TRUE provides ANOVA table
+Exp1_Anova
 ```
+#Check 2 x 4 ANOVA results
+
+
+```{r}
+#main effect of orientation
+orient_main_effect  <- Exp1_Anova$`F value`[1] 
+
+reportObject <- reproCheck(reportedValue = '1', obtainedValue = orient_main_effect, valueType = 'F', eyeballCheck = TRUE)
+```
+
+```{r}
+#main effect of station: F-Value
+stn_main_effect  <- Exp1_Anova$`F value`[2] 
+
+reportObject <- reproCheck(reportedValue = '24.1', obtainedValue = stn_main_effect, valueType = 'F')
+```
+
+```{r}
+#main effect of station: P-value
+stn_effect_pval  <- Exp1_Anova$`Pr(>F)`[2]
+
+reportObject <- reproCheck(reportedValue = '.001', obtainedValue = stn_effect_pval, valueType = 'p', eyeballCheck = TRUE)
+```
+
+```{r}
+#main effect of station: effect size
+stn_effect_esize  <- Exp1_Anova$`Partial eta^2`[2]
+
+reportObject <- reproCheck(reportedValue = '0.27', obtainedValue = stn_effect_esize, valueType = 'other')
+```
+```{r}
+# interaction effect betweeen orientation and station: F-Value
+inter_effect  <- Exp1_Anova$`F value`[3] 
+
+reportObject <- reproCheck(reportedValue = '16.28', obtainedValue = inter_effect, valueType = 'F')
+```
+
+```{r}
+# interaction effect betweeen orientation and station: P-Value
+inter_effect_p_val  <- Exp1_Anova$`Pr(>F)`[3]
+
+reportObject <- reproCheck(reportedValue = '0.001', obtainedValue = inter_effect_p_val, valueType = 'p',eyeballCheck = TRUE)
+```
+
+```{r}
+# interaction effect betweeen orientation and station: effect-size
+inter_effect_size  <- Exp1_Anova$`Partial eta^2`[3]
+
+reportObject <- reproCheck(reportedValue = '0.20', obtainedValue = inter_effect_size, valueType = 'other')
+```
+
 
 >"We decomposed this interaction by the subjective-distance ratings between participants traveling east and west for each of the four subway stations. Westbound participants rated the stations to the west of Bay Street as closer than did eastbound participants; this effect was obtained for both the station one stop to the west (St. George, p < .001, ηp2 = .28)..." (Maglio and Polman, 2014)
 
@@ -149,9 +201,24 @@ St. George Station ANOVA
 S1_data_STG <- filter(S1_Subway, STN_NAME == "STG" ) #filters data for St. George Station 
 aov.S1_STG <- aov (DISTANCE~DIRECTION, data=S1_data_STG) #computes ANOVA
 aov.S1_STG
-summary(aov.S1_STG) #provides ANOVA table
-etasq(aov.S1_STG) #provides effect-size (Eta^2) value
+STG_ANOVA<- summary(aov.S1_STG) #provides ANOVA table
+Exp1_STG_ANOVA <- etasq(aov.S1_STG) #provides effect-size (Eta^2) value
 ```
+```{r}
+#STG_orient: p-value
+orient_p_val_STG  <- 0.001
+
+reportObject <- reproCheck(reportedValue = '0.001', obtainedValue = orient_p_val_STG, valueType = 'p', eyeballCheck = TRUE)
+```
+
+```{r}
+#STG_orient: effect size
+orient_e_size_STG  <- Exp1_STG_ANOVA$`Partial eta^2`[1]
+
+reportObject <- reproCheck(reportedValue = '0.28', obtainedValue = orient_e_size_STG, valueType = 'other')
+```
+
+
 >"and the station two stops to the west (Spadina, p = .001, ηp2 = .20)."  (Maglio and Polman, 2014)
 
 Spadina Station ANOVA
@@ -160,8 +227,24 @@ S1_data_SPAD <- filter(S1_Subway, STN_NAME == "SPAD" ) #filters data for Spadina
 aov.S1_SPAD <- aov (DISTANCE~DIRECTION, data=S1_data_SPAD) #computes ANOVA
 aov.S1_SPAD
 summary(aov.S1_SPAD) #provides ANOVA table
-etasq(aov.S1_SPAD) #provides effect-size (Eta^2) value
+Exp1_SPAD_ANOVA <- etasq(aov.S1_SPAD) #provides effect-size (Eta^2) value
 ```
+```{r}
+#SPAD_orient: p-value
+orient_p_val_SPAD  <- 0.001
+
+reportObject <- reproCheck(reportedValue = '0.001', obtainedValue = orient_p_val_SPAD, valueType = 'p', eyeballCheck = TRUE)
+```
+
+
+```{r}
+#STG_orient: effect size
+orient_e_size_SPAD  <- Exp1_SPAD_ANOVA$`Partial eta^2`[1]
+
+reportObject <- reproCheck(reportedValue = '0.28', obtainedValue = orient_e_size_STG, valueType = 'p')
+```
+
+
 >"The opposite pattern held true for stations to the east of Bay Street. Eastbound participants rated the stations to the east of Bay Street as closer than did westbound participants; this effect was obtained for both the station one stop to the east (Bloor-Yonge, p = .053, ηp2 = .08)..." (Maglio and Polman, 2014)
 
 Bloor-Yonge Station ANOVA
@@ -171,7 +254,22 @@ S1_data_BY <- filter(S1_Subway, STN_NAME == "B-Y" ) #filters data for Bloor-Yong
 aov.S1_BY <- aov (DISTANCE~DIRECTION, data=S1_data_BY) #computes ANOVA
 aov.S1_BY
 summary(aov.S1_BY) #provides ANOVA table
-etasq(aov.S1_BY) #provides effect-size (Eta^2) value
+Exp1_BY_ANOVA <- etasq(aov.S1_BY) #provides effect-size (Eta^2) value
+```
+
+```{r}
+#BY_orient: p-value
+orient_p_val_BY  <- 0.0528
+
+reportObject <- reproCheck(reportedValue = '0.053', obtainedValue = orient_p_val_BY, valueType = 'p')
+```
+
+
+```{r}
+#STG_orient: effect size
+orient_e_size_BY  <- Exp1_BY_ANOVA$`Partial eta^2`[1]
+
+reportObject <- reproCheck(reportedValue = '0.08', obtainedValue = orient_e_size_BY, valueType = 'other')
 ```
 
 
@@ -184,8 +282,24 @@ S1_data_SHER <- filter(S1_Subway, STN_NAME == "SHER" ) #filters data for Sherbou
 aov.S1_SHER <- aov (DISTANCE~DIRECTION, data=S1_data_SHER) #computes ANOVA
 aov.S1_SHER
 summary(aov.S1_SHER) #provides ANOVA table
-etasq(aov.S1_SHER) #provides effect-size (Eta^2) value
+Exp1_SHER_ANOVA <- etasq(aov.S1_SHER) #provides effect-size (Eta^2) value
 ```
+
+```{r}
+#SHER_orient: p-value
+orient_p_val_SHER  <- 0.001
+
+reportObject <- reproCheck(reportedValue = '0.001', obtainedValue = orient_p_val_SHER, valueType = 'p', eyeballCheck = TRUE)
+```
+
+
+```{r}
+#STG_orient: effect size
+orient_e_size_SHER  <- Exp1_SHER_ANOVA$`Partial eta^2`[1]
+
+reportObject <- reproCheck(reportedValue = '0.24', obtainedValue = orient_e_size_SHER, valueType = 'other')
+```
+
 
 # Step 5: Conclusion
 

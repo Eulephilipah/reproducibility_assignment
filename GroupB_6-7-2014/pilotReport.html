@@ -1602,7 +1602,7 @@ S1_means_directional</code></pre>
 </div>
 <div id="inferential-statistics" class="section level2">
 <h2>Inferential statistics</h2>
-<p>2 x 4 ANOVA on closeness ratings Attempt to reproduce Results</p>
+<p>2 x 4 ANOVA on closeness ratings attempt to reproduce Results</p>
 <blockquote>
 <p>“We carried out a 2 (orientation: toward, away from) × 4 (station: Spadina, St. George, Bloor-Yonge, Sherbourne) analysis of variance (ANOVA) on closeness ratings, which revealed no main effect of orientation, F &lt; 1, and a main effect of station, F(3, 194) = 24.10, p &lt; .001, ηp 2 = .27. This main effect was qualified by the predicted interaction between orientation and station, F(3, 194) = 16.28, p &lt; .001, ηp2 = .20.” (Maglio and Polman, 2014)</p>
 </blockquote>
@@ -1619,7 +1619,8 @@ aov.S1</code></pre>
 ## 
 ## Residual standard error: 1.035833
 ## Estimated effects may be unbalanced</code></pre>
-<pre class="r"><code>etasq(aov.S1, anova = TRUE) # Provides Eta^2 value, ANOVA = TRUE provides ANOVA table</code></pre>
+<pre class="r"><code>Exp1_Anova &lt;- etasq(aov.S1, anova = TRUE) # Provides Eta^2 value, ANOVA = TRUE provides ANOVA table
+Exp1_Anova</code></pre>
 <pre><code>## Anova Table (Type II tests)
 ## 
 ## Response: DISTANCE
@@ -1630,6 +1631,42 @@ aov.S1</code></pre>
 ## Residuals                        208.152 194                      
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>#Check 2 x 4 ANOVA results</p>
+<pre class="r"><code>#main effect of orientation
+orient_main_effect  &lt;- Exp1_Anova$`F value`[1] 
+
+reportObject &lt;- reproCheck(reportedValue = &#39;1&#39;, obtainedValue = orient_main_effect, valueType = &#39;F&#39;, eyeballCheck = TRUE)</code></pre>
+<pre><code>## [1] &quot;MATCH for F. Eyeball comparison only.&quot;</code></pre>
+<pre class="r"><code>#main effect of station: F-Value
+stn_main_effect  &lt;- Exp1_Anova$`F value`[2] 
+
+reportObject &lt;- reproCheck(reportedValue = &#39;24.1&#39;, obtainedValue = stn_main_effect, valueType = &#39;F&#39;)</code></pre>
+<pre><code>## [1] &quot;MINOR_ERROR for F. The reported value (24.1) and the obtained value (23.3) differed by 3.32%. Note that the obtained value was rounded to 1 decimal places to match the reported value.&quot;</code></pre>
+<pre class="r"><code>#main effect of station: P-value
+stn_effect_pval  &lt;- Exp1_Anova$`Pr(&gt;F)`[2]
+
+reportObject &lt;- reproCheck(reportedValue = &#39;.001&#39;, obtainedValue = stn_effect_pval, valueType = &#39;p&#39;, eyeballCheck = TRUE)</code></pre>
+<pre><code>## [1] &quot;MATCH for p. Eyeball comparison only.&quot;</code></pre>
+<pre class="r"><code>#main effect of station: effect size
+stn_effect_esize  &lt;- Exp1_Anova$`Partial eta^2`[2]
+
+reportObject &lt;- reproCheck(reportedValue = &#39;0.27&#39;, obtainedValue = stn_effect_esize, valueType = &#39;other&#39;)</code></pre>
+<pre><code>## [1] &quot;MATCH for other. The reported value (0.27) and the obtained value (0.27) differed by 0%. Note that the obtained value was rounded to 2 decimal places to match the reported value.&quot;</code></pre>
+<pre class="r"><code># interaction effect betweeen orientation and station: F-Value
+inter_effect  &lt;- Exp1_Anova$`F value`[3] 
+
+reportObject &lt;- reproCheck(reportedValue = &#39;16.28&#39;, obtainedValue = inter_effect, valueType = &#39;F&#39;)</code></pre>
+<pre><code>## [1] &quot;MATCH for F. The reported value (16.28) and the obtained value (16.28) differed by 0%. Note that the obtained value was rounded to 2 decimal places to match the reported value.&quot;</code></pre>
+<pre class="r"><code># interaction effect betweeen orientation and station: P-Value
+inter_effect_p_val  &lt;- Exp1_Anova$`Pr(&gt;F)`[3]
+
+reportObject &lt;- reproCheck(reportedValue = &#39;0.001&#39;, obtainedValue = inter_effect_p_val, valueType = &#39;p&#39;,eyeballCheck = TRUE)</code></pre>
+<pre><code>## [1] &quot;MATCH for p. Eyeball comparison only.&quot;</code></pre>
+<pre class="r"><code># interaction effect betweeen orientation and station: effect-size
+inter_effect_size  &lt;- Exp1_Anova$`Partial eta^2`[3]
+
+reportObject &lt;- reproCheck(reportedValue = &#39;0.20&#39;, obtainedValue = inter_effect_size, valueType = &#39;other&#39;)</code></pre>
+<pre><code>## [1] &quot;MATCH for other. The reported value (0.2) and the obtained value (0.2) differed by 0%. Note that the obtained value was rounded to 2 decimal places to match the reported value.&quot;</code></pre>
 <blockquote>
 <p>“We decomposed this interaction by the subjective-distance ratings between participants traveling east and west for each of the four subway stations. Westbound participants rated the stations to the west of Bay Street as closer than did eastbound participants; this effect was obtained for both the station one stop to the west (St. George, p &lt; .001, ηp2 = .28)…” (Maglio and Polman, 2014)</p>
 </blockquote>
@@ -1647,16 +1684,18 @@ aov.S1_STG</code></pre>
 ## 
 ## Residual standard error: 0.9299483
 ## Estimated effects may be unbalanced</code></pre>
-<pre class="r"><code>summary(aov.S1_STG) #provides ANOVA table</code></pre>
-<pre><code>##             Df Sum Sq Mean Sq F value   Pr(&gt;F)    
-## DIRECTION    1  16.25  16.252   18.79 7.23e-05 ***
-## Residuals   49  42.38   0.865                     
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<pre class="r"><code>etasq(aov.S1_STG) #provides effect-size (Eta^2) value</code></pre>
-<pre><code>##           Partial eta^2
-## DIRECTION     0.2772092
-## Residuals            NA</code></pre>
+<pre class="r"><code>STG_ANOVA&lt;- summary(aov.S1_STG) #provides ANOVA table
+Exp1_STG_ANOVA &lt;- etasq(aov.S1_STG) #provides effect-size (Eta^2) value</code></pre>
+<pre class="r"><code>#STG_orient: p-value
+orient_p_val_STG  &lt;- 0.001
+
+reportObject &lt;- reproCheck(reportedValue = &#39;0.001&#39;, obtainedValue = orient_p_val_STG, valueType = &#39;p&#39;, eyeballCheck = TRUE)</code></pre>
+<pre><code>## [1] &quot;MATCH for p. Eyeball comparison only.&quot;</code></pre>
+<pre class="r"><code>#STG_orient: effect size
+orient_e_size_STG  &lt;- Exp1_STG_ANOVA$`Partial eta^2`[1]
+
+reportObject &lt;- reproCheck(reportedValue = &#39;0.28&#39;, obtainedValue = orient_e_size_STG, valueType = &#39;p&#39;)</code></pre>
+<pre><code>## [1] &quot;MATCH for p. The reported value (0.28) and the obtained value (0.28) differed by 0%. Note that the obtained value was rounded to 2 decimal places to match the reported value.&quot;</code></pre>
 <blockquote>
 <p>“and the station two stops to the west (Spadina, p = .001, ηp2 = .20).” (Maglio and Polman, 2014)</p>
 </blockquote>
@@ -1680,10 +1719,17 @@ aov.S1_SPAD</code></pre>
 ## Residuals   49  53.64   1.095                   
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<pre class="r"><code>etasq(aov.S1_SPAD) #provides effect-size (Eta^2) value</code></pre>
-<pre><code>##           Partial eta^2
-## DIRECTION     0.1962763
-## Residuals            NA</code></pre>
+<pre class="r"><code>Exp1_SPAD_ANOVA &lt;- etasq(aov.S1_SPAD) #provides effect-size (Eta^2) value</code></pre>
+<pre class="r"><code>#SPAD_orient: p-value
+orient_p_val_SPAD  &lt;- 0.001
+
+reportObject &lt;- reproCheck(reportedValue = &#39;0.001&#39;, obtainedValue = orient_p_val_SPAD, valueType = &#39;p&#39;, eyeballCheck = TRUE)</code></pre>
+<pre><code>## [1] &quot;MATCH for p. Eyeball comparison only.&quot;</code></pre>
+<pre class="r"><code>#STG_orient: effect size
+orient_e_size_SPAD  &lt;- Exp1_SPAD_ANOVA$`Partial eta^2`[1]
+
+reportObject &lt;- reproCheck(reportedValue = &#39;0.28&#39;, obtainedValue = orient_e_size_STG, valueType = &#39;p&#39;)</code></pre>
+<pre><code>## [1] &quot;MATCH for p. The reported value (0.28) and the obtained value (0.28) differed by 0%. Note that the obtained value was rounded to 2 decimal places to match the reported value.&quot;</code></pre>
 <blockquote>
 <p>“The opposite pattern held true for stations to the east of Bay Street. Eastbound participants rated the stations to the east of Bay Street as closer than did westbound participants; this effect was obtained for both the station one stop to the east (Bloor-Yonge, p = .053, ηp2 = .08)…” (Maglio and Polman, 2014)</p>
 </blockquote>
@@ -1707,10 +1753,17 @@ aov.S1_BY</code></pre>
 ## Residuals   47  49.52   1.054                 
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<pre class="r"><code>etasq(aov.S1_BY) #provides effect-size (Eta^2) value</code></pre>
-<pre><code>##           Partial eta^2
-## DIRECTION     0.0774451
-## Residuals            NA</code></pre>
+<pre class="r"><code>Exp1_BY_ANOVA &lt;- etasq(aov.S1_BY) #provides effect-size (Eta^2) value</code></pre>
+<pre class="r"><code>#BY_orient: p-value
+orient_p_val_BY  &lt;- 0.0528
+
+reportObject &lt;- reproCheck(reportedValue = &#39;0.053&#39;, obtainedValue = orient_p_val_BY, valueType = &#39;p&#39;)</code></pre>
+<pre><code>## [1] &quot;MATCH for p. The reported value (0.053) and the obtained value (0.053) differed by 0%. Note that the obtained value was rounded to 3 decimal places to match the reported value.&quot;</code></pre>
+<pre class="r"><code>#STG_orient: effect size
+orient_e_size_BY  &lt;- Exp1_BY_ANOVA$`Partial eta^2`[1]
+
+reportObject &lt;- reproCheck(reportedValue = &#39;0.08&#39;, obtainedValue = orient_e_size_BY, valueType = &#39;other&#39;)</code></pre>
+<pre><code>## [1] &quot;MATCH for other. The reported value (0.08) and the obtained value (0.08) differed by 0%. Note that the obtained value was rounded to 2 decimal places to match the reported value.&quot;</code></pre>
 <blockquote>
 <p>“and the station two stops to the east (Sherbourne, p &lt; .001, ηp2 = .24).” (Maglio and Polman, 2014)</p>
 </blockquote>
@@ -1734,10 +1787,17 @@ aov.S1_SHER</code></pre>
 ## Residuals   49  62.62   1.278                     
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<pre class="r"><code>etasq(aov.S1_SHER) #provides effect-size (Eta^2) value</code></pre>
-<pre><code>##           Partial eta^2
-## DIRECTION     0.2356667
-## Residuals            NA</code></pre>
+<pre class="r"><code>Exp1_SHER_ANOVA &lt;- etasq(aov.S1_SHER) #provides effect-size (Eta^2) value</code></pre>
+<pre class="r"><code>#SHER_orient: p-value
+orient_p_val_SHER  &lt;- 0.001
+
+reportObject &lt;- reproCheck(reportedValue = &#39;0.001&#39;, obtainedValue = orient_p_val_SHER, valueType = &#39;p&#39;, eyeballCheck = TRUE)</code></pre>
+<pre><code>## [1] &quot;MATCH for p. Eyeball comparison only.&quot;</code></pre>
+<pre class="r"><code>#STG_orient: effect size
+orient_e_size_SHER  &lt;- Exp1_SHER_ANOVA$`Partial eta^2`[1]
+
+reportObject &lt;- reproCheck(reportedValue = &#39;0.24&#39;, obtainedValue = orient_e_size_SHER, valueType = &#39;other&#39;)</code></pre>
+<pre><code>## [1] &quot;MATCH for other. The reported value (0.24) and the obtained value (0.24) differed by 0%. Note that the obtained value was rounded to 2 decimal places to match the reported value.&quot;</code></pre>
 </div>
 </div>
 <div id="step-5-conclusion" class="section level1">
@@ -1787,7 +1847,7 @@ if(reportType == &quot;copilot&quot;){
 ##  collate  English_United States.1252  
 ##  ctype    English_United States.1252  
 ##  tz       America/Los_Angeles         
-##  date     2019-11-09                  
+##  date     2019-11-10                  
 ## 
 ## - Packages --------------------------------------------------------------
 ##  package      * version  date       lib
